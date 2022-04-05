@@ -27,23 +27,23 @@
                 <span class="sidebar-text">{{ __('dashboard') }}</span>
             </a>
         </li>
-        <li class="nav-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
-            <a href="{{ route('users.index') }}" class="nav-link">
+        <li class="nav-item {{ request()->routeIs('products.index') ? 'active' : '' }}">
+            <a href="{{ route('products.index') }}" class="nav-link">
                 <span class="sidebar-icon me-3">
                     <i class="fas fa-user-alt fa-fw"></i>
                 </span>
-                <span class="sidebar-text">{{ __('Users') }}</span>
+                <span class="sidebar-text">{{ __('Products') }}</span>
             </a>
         </li>
 
-        <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
+        {{-- <li class="nav-item {{ request()->routeIs('about') ? 'active' : '' }}">
             <a href="{{ route('about') }}" class="nav-link">
                 <span class="sidebar-icon me-3">
                     <i class="fas fa-eye"></i>
                 </span>
                 <span class="sidebar-text">{{ __('About us') }}</span>
             </a>
-        </li>
+        </li> --}}
     @endif
 
 

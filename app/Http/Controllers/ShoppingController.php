@@ -31,36 +31,43 @@ class ShoppingController extends Controller
     }
     public function make()
     {
-        $user_data=Shopping::where('status','pending')->distinct()->get(['user_id']);  
+        $user_data=Shopping::where('status','pending')->distinct()->get(['user_id']); 
+        //dd($user_data); 
+        if (!count($user_data))
+        {
+            notify()->error('There are no pending invoices!');   
+             return redirect()->back();
+        }else{
 
-        foreach ($user_data as $data) {
-            $users = DB::table('products')      
-            ->leftJoin('shoppings', 'shoppings.product_id', '=', 'products.id')
-            ->leftJoin('users', 'shoppings.user_id', '=', 'users.id')
-            ->select(DB::raw('SUM(shoppings.price) as total'),
-            DB::raw('SUM(shoppings.tax) as total_tax'),            
-            DB::raw('SUM(shoppings.total_price) as total_bill')            
-            )->where('shoppings.user_id', '=',  $data->user_id)
-            ->where('shoppings.status', '=', 'pending')        
-            ->get()->toArray();
-            
-            $bills=New Bill();
-            $bills->total_amount=$users[0]->total;
-            $bills->total_tax=$users[0]->total_tax;
-            $bills->total_bill=$users[0]->total_bill;            
-            $bills->post_date_end=carbon::now();
-            $bills->save();
-            $billsId=$bills->id;
-
-            DB::table('shoppings')
-            ->where('user_id','=',$data->user_id)
-            ->where('shoppings.status','=', 'pending')
-            ->update(['bill_id' => $billsId]);
-
-            DB::table('shoppings')->where('user_id', $data->user_id)->update(['status' => 'completed']);
-            
+            foreach ($user_data as $data) {
+                $users = DB::table('products')      
+                ->leftJoin('shoppings', 'shoppings.product_id', '=', 'products.id')
+                ->leftJoin('users', 'shoppings.user_id', '=', 'users.id')
+                ->select(DB::raw('SUM(shoppings.price) as total'),
+                DB::raw('SUM(shoppings.tax) as total_tax'),            
+                DB::raw('SUM(shoppings.total_price) as total_bill')            
+                )->where('shoppings.user_id', '=',  $data->user_id)
+                ->where('shoppings.status', '=', 'pending')        
+                ->get()->toArray();
+                
+                $bills=New Bill();
+                $bills->total_amount=$users[0]->total;
+                $bills->total_tax=$users[0]->total_tax;
+                $bills->total_bill=$users[0]->total_bill;            
+                $bills->post_date_end=carbon::now();
+                $bills->save();
+                $billsId=$bills->id;
+    
+                DB::table('shoppings')
+                ->where('user_id','=',$data->user_id)
+                ->where('shoppings.status','=', 'pending')
+                ->update(['bill_id' => $billsId]);
+    
+                DB::table('shoppings')->where('user_id', $data->user_id)->update(['status' => 'completed']);
+                
+            }
+            notify()->success('Thanks for your purchase!');   
+            return redirect()->back();
         }
-        notify()->success('Thanks for your purchase!');   
-        return redirect()->back();
     }
 }

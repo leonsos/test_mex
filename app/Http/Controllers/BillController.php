@@ -18,12 +18,14 @@ class BillController extends Controller
     {
         $bills_details = DB::table('shoppings')            
         ->leftJoin('products', 'shoppings.product_id', '=', 'products.id')                      
+        ->leftJoin('users', 'shoppings.user_id', '=', 'users.id')                      
         ->select('products.name as name','shoppings.price as price',
-        'shoppings.tax as tax','shoppings.total_price as total')
+        'shoppings.tax as tax','shoppings.total_price as total','users.name as name')
         ->where('shoppings.bill_id',$id)        
         ->where('shoppings.status','=','completed')
         ->orderBy('shoppings.created_at') 
-        ->get();
-        dd($bills_details);
+        ->get(); 
+        //dd($bills_details);
+        return view('show', compact('bills_details'));
     }
 }

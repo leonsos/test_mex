@@ -30,7 +30,7 @@
         <li class="nav-item {{ request()->routeIs('products.index') ? 'active' : '' }}">
             <a href="{{ route('products.index') }}" class="nav-link">
                 <span class="sidebar-icon me-3">
-                    <i class="fas fa-user-alt fa-fw"></i>
+                    <i class="fas fa-tablets"></i>
                 </span>
                 <span class="sidebar-text">{{ __('Products') }}</span>
             </a>

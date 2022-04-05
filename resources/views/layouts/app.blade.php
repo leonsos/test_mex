@@ -9,6 +9,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    @notifyCss
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Scripts -->
@@ -25,8 +26,11 @@
         {{-- Footer --}}
         @include('layouts.footer')
     </main>
-
+    
+    {{-- @include('notify::components.notify') --}}
+    <x:notify-messages />
     @yield('scripts')
+    @notifyJs
 </body>
 
 </html>

@@ -25,7 +25,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::post('shooping/save',[\App\Http\Controllers\ShoppingController::class,'save'])->name('save.shopping');
 Route::group(['middleware'=>['auth','isadmin']],function () {
     Route::view('about', 'about')->name('about');
-
+    Route::get('dashboard', [\App\Http\Controllers\BillController::class,'index_dashbord'])->name('dashboard');
+    Route::get('bills/details/{bill}', [\App\Http\Controllers\BillController::class, 'details'])->name('bills.details');   
+    Route::get('shopping/make',[\App\Http\Controllers\ShoppingController::class,'make'])->name('make');
     Route::get('users', [\App\Http\Controllers\UserController::class, 'index'])->name('users.index');
 
     Route::get('profile', [\App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
